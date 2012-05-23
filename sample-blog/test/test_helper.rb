@@ -12,4 +12,16 @@ class ActiveSupport::TestCase
   fixtures :all
 
   # Add more helper methods to be used by all tests here...
+  def self.sub_tests(base, names = nil)                                                                     
+    if (/_test\.rb$/ =~ $0) 
+      unless names.nil?
+        names.each do |test|
+          require File.dirname(__FILE__) + "/#{base}/#{test}_test"
+        end
+    
+      else
+        Dir[File.dirname(__FILE__) + "/#{base}/*_test.rb"].each { |sub| require sub}
+      end
+    end 
+  end 
 end
