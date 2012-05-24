@@ -7,12 +7,15 @@ class ReportsController
     end
 
     test "should create report" do
-      sign_in User.first
+      user = User.first
+      sign_in user
       assert_difference('Report.count') do
-        post :create, report: { body: @report.body, title: @report.title }
+        post :create, report: { body: 'aaa', title: 'bbb' }
       end
 
       assert_redirected_to report_path(assigns(:report))
+      assert_equal('aaa', user.reports.last.body)
+      assert_equal('bbb', user.reports.last.title)
     end
   end
 end

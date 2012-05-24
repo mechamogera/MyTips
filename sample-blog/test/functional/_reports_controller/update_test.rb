@@ -7,9 +7,12 @@ class ReportsController
     end
 
     test "should update report" do
-      sign_in User.first
-      put :update, id: @report, report: { body: @report.body, title: @report.title }
+      user = User.first
+      sign_in user
+      put :update, id: @report, report: { body: 'ccc', title: 'ddd' }
       assert_redirected_to report_path(assigns(:report))
+      assert_equal('ccc', user.reports.first.body)
+      assert_equal('ddd', user.reports.first.title)
     end
 
     test "should not update report without sign_in" do

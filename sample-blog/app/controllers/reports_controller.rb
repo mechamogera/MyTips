@@ -42,10 +42,13 @@ class ReportsController < ApplicationController
   # POST /reports
   # POST /reports.json
   def create
-    @report = Report.new(params[:report])
+    @user = current_user
+    @report = @user.reports.build
+    @report.attributes = params[:report]
+#    @report = Report.new(params[:report])
 
     respond_to do |format|
-      if @report.save
+      if @user.save
         format.html { redirect_to @report, notice: 'Report was successfully created.' }
         format.json { render json: @report, status: :created, location: @report }
       else
