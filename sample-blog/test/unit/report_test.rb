@@ -1,7 +1,11 @@
 require 'test_helper'
 
 class ReportTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+  test "report save" do
+    report = Report.new({
+      :title => 'title',
+      :body => 'body'
+    })
+    assert(report.save, 'Failed ti save')
+  end
 end
