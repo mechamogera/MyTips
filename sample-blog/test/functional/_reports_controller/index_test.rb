@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/test_case'
+require File.expand_path('test_case', File.dirname(__FILE__))
 
 class ReportsController
   class CreateTest < TestCase

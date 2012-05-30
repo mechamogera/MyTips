@@ -8,4 +8,14 @@ class ReportTest < ActiveSupport::TestCase
     })
     assert(report.save, 'Failed ti save')
   end
+
+  test "report can't save because title is null" do
+    report = Report.new({
+      :body => 'body'
+    })
+    assert(!report.save)
+    assert_equal(1, report.errors.count)
+    assert_equal(1, report.errors.full_messages.size)
+    assert_equal("Title can't be blank", report.errors.full_messages.first)
+  end
 end

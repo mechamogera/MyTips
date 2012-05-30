@@ -45,7 +45,6 @@ class ReportsController < ApplicationController
     @user = current_user
     @report = @user.reports.build
     @report.attributes = params[:report]
-#    @report = Report.new(params[:report])
 
     respond_to do |format|
       if @user.save
