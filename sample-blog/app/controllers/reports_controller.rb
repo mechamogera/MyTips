@@ -36,7 +36,15 @@ class ReportsController < ApplicationController
 
   # GET /reports/1/edit
   def edit
-    @report = Report.find(params[:id])
+    @report = Report.find_by_id(params[:id])
+    raise BlogException.new(:not_found, "not find request page") unless @report
+  rescue => e
+    @message = e.message
+    status = (e.class == BlogException ? e.code : :internal_server_error)
+    respond_to do |format|
+      format.html { render :template => 'error', :status => status }
+      format.json { render json: @message, :status => status  }
+    end
   end
 
   # POST /reports

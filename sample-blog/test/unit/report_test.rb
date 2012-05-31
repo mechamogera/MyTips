@@ -6,7 +6,7 @@ class ReportTest < ActiveSupport::TestCase
       :title => 'title',
       :body => 'body'
     })
-    assert(report.save, 'Failed ti save')
+    assert(report.save, 'Failed to save')
   end
 
   test "report can't save because title is null" do

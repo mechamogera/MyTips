@@ -17,5 +17,13 @@ class ReportsController
         get :edit, id: @report
       end
     end
+
+    test "should not get edit because of invalid id" do
+      sign_in User.first
+      get :edit, id: 'test'
+      assert_response :not_found
+      assert_template("error")
+      assert_equal("not find request page", assigns(:message))
+    end
   end
 end
