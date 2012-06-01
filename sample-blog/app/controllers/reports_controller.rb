@@ -7,6 +7,7 @@ class ReportsController < ApplicationController
   # GET /users/:user_id/reports.json
   def index
     if params[:user_id]
+      raise BlogException.new(:not_found, "not find request page") unless User.find_by_id(params[:user_id])
       @reports = Report.where(:user_id => params[:user_id]).all
     else
       @reports = Report.all
@@ -17,6 +18,13 @@ class ReportsController < ApplicationController
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @reports }
+    end
+  rescue => e
+    @message = e.message
+    status = (e.class == BlogException ? e.code : :internal_server_error)
+    respond_to do |format|
+      format.html { render :template => 'error', :status => status }
+      format.json { render json: @message, :status => status  }
     end
   end
 
