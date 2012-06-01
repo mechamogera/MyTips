@@ -20,5 +20,25 @@ class ReportsController
         delete :destroy, id: @report
       end
     end
+    
+    test "should not destroy report because of invalid id" do
+      sign_in User.first
+      assert_no_difference('Report.count') do
+        delete :destroy, id: 'test'
+      end
+      assert_response :not_found
+      assert_template("error")
+      assert_equal("not find request page", assigns(:message))
+    end
+    
+    test "should not destroy report because of invalid owner" do
+      sign_in users(:two)
+      assert_no_difference('Report.count') do
+        delete :destroy, id: @report
+      end
+      assert_response :not_found
+      assert_template("error")
+      assert_equal("not find request page", assigns(:message))
+    end
   end
 end

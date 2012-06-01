@@ -5,6 +5,7 @@ class ReportsController < ApplicationController
   # GET /reports.json
   def index
     @reports = Report.all
+    @user = current_user
 
     respond_to do |format|
       format.html # index.html.erb
@@ -15,11 +16,19 @@ class ReportsController < ApplicationController
   # GET /reports/1
   # GET /reports/1.json
   def show
-    @report = Report.find(params[:id])
+    @report = Report.find_by_id(params[:id])
+    raise BlogException.new(:not_found, "not find request page") unless @report
 
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @report }
+    end
+  rescue => e
+    @message = e.message
+    status = (e.class == BlogException ? e.code : :internal_server_error)
+    respond_to do |format|
+      format.html { render :template => 'error', :status => status }
+      format.json { render json: @message, :status => status  }
     end
   end
 
@@ -38,6 +47,7 @@ class ReportsController < ApplicationController
   def edit
     @report = Report.find_by_id(params[:id])
     raise BlogException.new(:not_found, "not find request page") unless @report
+    raise BlogException.new(:not_found, "not find request page") unless @report.accessible?(current_user)
   rescue => e
     @message = e.message
     status = (e.class == BlogException ? e.code : :internal_server_error)
@@ -68,7 +78,9 @@ class ReportsController < ApplicationController
   # PUT /reports/1
   # PUT /reports/1.json
   def update
-    @report = Report.find(params[:id])
+    @report = Report.find_by_id(params[:id])
+    raise BlogException.new(:not_found, "not find request page") unless @report
+    raise BlogException.new(:not_found, "not find request page") unless @report.accessible?(current_user)
 
     respond_to do |format|
       if @report.update_attributes(params[:report])
@@ -79,17 +91,34 @@ class ReportsController < ApplicationController
         format.json { render json: @report.errors, status: :unprocessable_entity }
       end
     end
+  rescue => e
+    @message = e.message
+    status = (e.class == BlogException ? e.code : :internal_server_error)
+    respond_to do |format|
+      format.html { render :template => 'error', :status => status }
+      format.json { render json: @message, :status => status  }
+    end
   end
 
   # DELETE /reports/1
   # DELETE /reports/1.json
   def destroy
-    @report = Report.find(params[:id])
+    @report = Report.find_by_id(params[:id])
+    raise BlogException.new(:not_found, "not find request page") unless @report
+    raise BlogException.new(:not_found, "not find request page") unless @report.accessible?(current_user)
+    
     @report.destroy
 
     respond_to do |format|
       format.html { redirect_to reports_url }
       format.json { head :no_content }
+    end
+  rescue => e
+    @message = e.message
+    status = (e.class == BlogException ? e.code : :internal_server_error)
+    respond_to do |format|
+      format.html { render :template => 'error', :status => status }
+      format.json { render json: @message, :status => status  }
     end
   end
 end

@@ -16,5 +16,12 @@ class ReportsController
       get :show, id: @report
       assert_response :success
     end
+    
+    test "should not show report because of invalid id" do
+      get :show, id: 'test'
+      assert_response :not_found
+      assert_template("error")
+      assert_equal("not find request page", assigns(:message))
+    end
   end
 end

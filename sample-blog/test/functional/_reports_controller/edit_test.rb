@@ -25,5 +25,13 @@ class ReportsController
       assert_template("error")
       assert_equal("not find request page", assigns(:message))
     end
+    
+    test "should not get edit because of invalid owner" do
+      sign_in users(:two)
+      get :edit, id: @report
+      assert_response :not_found
+      assert_template("error")
+      assert_equal("not find request page", assigns(:message))
+    end
   end
 end

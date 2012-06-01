@@ -20,5 +20,22 @@ class ReportsController
         put :update, id: @report, report: { body: @report.body, title: @report.title }
       end
     end
+    
+    test "should not update because of invalid id" do
+      user = User.first
+      sign_in user
+      put :update, id: 'test', report: { body: 'ccc', title: 'ddd' }
+      assert_response :not_found
+      assert_template("error")
+      assert_equal("not find request page", assigns(:message))
+    end
+    
+    test "should not update because of invalid owner" do
+      sign_in users(:two)
+      put :update, id: @report, report: { body: 'ccc', title: 'ddd' }
+      assert_response :not_found
+      assert_template("error")
+      assert_equal("not find request page", assigns(:message))
+    end
   end
 end

@@ -3,7 +3,7 @@ class Report < ActiveRecord::Base
   validates :title, :presence => true
   belongs_to :user
 
-  def accesable?(user)
+  def accessible?(user)
     self.user == user
   end
 end
