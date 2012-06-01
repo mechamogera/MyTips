@@ -2,6 +2,10 @@ SampleBlog::Application.routes.draw do
   resources :reports
 
   devise_for :users
+  
+  resources :users, :only => [] do
+    resources :reports, :only => ['index']
+  end
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

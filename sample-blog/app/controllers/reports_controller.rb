@@ -3,8 +3,15 @@ class ReportsController < ApplicationController
 
   # GET /reports
   # GET /reports.json
+  # GET /users/:user_id/reports
+  # GET /users/:user_id/reports.json
   def index
-    @reports = Report.all
+    if params[:user_id]
+      @reports = Report.where(:user_id => params[:user_id]).all
+    else
+      @reports = Report.all
+    end
+
     @user = current_user
 
     respond_to do |format|
