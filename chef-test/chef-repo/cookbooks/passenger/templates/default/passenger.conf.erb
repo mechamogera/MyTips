@@ -1,0 +1,15 @@
+PassengerRoot <%= node[:passenger][:root_path] %>
+PassengerRuby <%= node[:languages][:ruby][:ruby_bin] %>
+PassengerMaxPoolSize <%= node[:passenger][:max_pool_size] %>
+
+<VirtualHost *:80>
+  DocumentRoot <%= @params[:docroot] %>
+  RailsEnv <%= @params[:rails_env] %>
+
+  <Directory <%= @params[:docroot] %>>
+    Options FollowSymLinks
+    AllowOverride None
+    Order allow,deny
+    Allow from all
+  </Directory>
+</VirtualHost>
