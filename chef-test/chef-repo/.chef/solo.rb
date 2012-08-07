@@ -1,2 +1,2 @@
 file_cache_path "/tmp/chef-solo"
-cookbook_path "/home/ec2-user/chef-repo/cookbooks"
+cookbook_path "/tmp/MyTips/chef-test/chef-repo/cookbooks"
