@@ -1,0 +1,10 @@
+<VirtualHost *:80>
+  RailsEnv development
+  DocumentRoot /var/MyTips/sample-blog/public
+  <Directory "/var/MyTips/sample-blog/public">
+    Options FollowSymLinks
+    AllowOverride None
+    Order allow,deny
+    Allow from all
+  </Directory>
+</VirtualHost>
