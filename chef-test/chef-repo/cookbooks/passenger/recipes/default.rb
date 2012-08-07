@@ -34,3 +34,8 @@ execute "passenger_module" do
   end
   command 'passenger-install-apache2-module --auto'
 end
+
+template "/etc/httpd/conf.d/passenger_load.conf" do
+  source "passenger_load.conf.erb"
+  variables :snippet => `passenger-install-apache2-module --snippet`
+end
