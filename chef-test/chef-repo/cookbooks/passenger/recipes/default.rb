@@ -28,5 +28,9 @@ gem_package "passenger" do
 end
 
 execute "passenger_module" do
+  not_if do
+    result = `passenger-install-apache2-module --snippet`
+    File.exist?(result.split("\n")[0].split(/\s+/,3)[2])
+  end
   command 'passenger-install-apache2-module --auto'
 end
