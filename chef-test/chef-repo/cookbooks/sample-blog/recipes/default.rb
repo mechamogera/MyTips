@@ -27,8 +27,6 @@ end
 git "/var/MyTips" do
   repository "git://github.com/mechamogera/MyTips.git"
   action :sync
-  user "ec2-user"
-  group "ec2-user"
 end
 
 template "/etc/httpd/conf.d/sample-blog.conf" do

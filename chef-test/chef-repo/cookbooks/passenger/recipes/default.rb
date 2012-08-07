@@ -38,5 +38,5 @@ end
 template "/etc/httpd/conf.d/passenger_load.conf" do
   source "passenger_load.conf.erb"
   proc = Proc.new { `passenger-install-apache2-module --snippet` }
-  variables :snippet => proc.call
+  variables :snippet => proc
 end
