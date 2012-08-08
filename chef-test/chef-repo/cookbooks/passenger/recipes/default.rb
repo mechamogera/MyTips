@@ -41,4 +41,6 @@ template "/etc/httpd/conf.d/passenger_load.conf" do
   variables :snippet => proc
 end
 
-service "httpd"
+service "httpd" do
+  action :enable
+end
