@@ -18,17 +18,40 @@
 #
 include_recipe "passenger"
 
-%w{git}.each do |package_name|
+%w{git sqlite-devel mysql mysql-devel}.each do |package_name|
   package package_name do
     action :install
   end
 end
 
+directory "/var/MyTips" do
+  owner "ec2-user"
+  group "ec2-user"
+  action :create
+end
+
+execute "bundle-install" do
+  user "ec2-user"
+  group "ec2-user"
+  command "cd /var/MyTips/sample-blog/ && bundle install --path vendor/bundle"
+end
+
+execute "db-migrate" do
+  user "ec2-user"
+  group "ec2-user"
+  command "cd /var/MyTips/sample-blog/ && rake db:migrate"
+end
+
 git "/var/MyTips" do
   repository "git://github.com/mechamogera/MyTips.git"
+  user "ec2-user"
+  group "ec2-user"
   action :sync
+  notifies :run, resources(:execute => "bundle-install" )
+  notifies :run, resources(:execute => "db-migrate" )
 end
 
 template "/etc/httpd/conf.d/sample-blog.conf" do
   source "sample-blog.conf.erb"
+  notifies :restart, "service[httpd]"
 end

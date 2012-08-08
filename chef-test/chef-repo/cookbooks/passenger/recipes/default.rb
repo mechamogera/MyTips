@@ -40,3 +40,5 @@ template "/etc/httpd/conf.d/passenger_load.conf" do
   proc = Proc.new { `passenger-install-apache2-module --snippet` }
   variables :snippet => proc
 end
+
+service "httpd"
