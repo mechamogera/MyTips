@@ -34,12 +34,14 @@ execute "bundle-install" do
   user "ec2-user"
   group "ec2-user"
   command "cd /var/MyTips/sample-blog/ && bundle install --path vendor/bundle"
+  action :nothing
 end
 
 execute "db-migrate" do
   user "ec2-user"
   group "ec2-user"
   command "cd /var/MyTips/sample-blog/ && rake db:migrate"
+  action :nothing
 end
 
 git "/var/MyTips" do
